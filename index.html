@@ -714,6 +714,9 @@
             animation: slideInRight 0.3s ease-out;
             max-width: 400px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .notification.error {
@@ -1021,11 +1024,7 @@
                 </div>
                 
                 <!-- ПАГИНАЦИЯ -->
-                <div class="pagination" id="pagination" style="display: none;">
-                    <button class="page-btn" data-page="prev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="page-btn active" data-page="1">1</button>
-                    <button class="page-btn" data-page="next"><i class="fas fa-chevron-right"></i></button>
-                </div>
+                <div class="pagination" id="pagination" style="display: none;"></div>
             </div>
         </section>
 
@@ -1102,7 +1101,6 @@
             <div class="vehicle-detail-grid">
                 <div class="vehicle-detail-gallery" id="vehicle-gallery">
                     <div class="gallery-main" id="main-image"></div>
-                    <!-- Миниатюры будут добавлены через JS -->
                 </div>
                 
                 <div class="vehicle-detail-info">
@@ -1193,149 +1191,377 @@
 
     <script>
         // ====================
-        // КЛАСС ДЛЯ РАБОТЫ С RESOLEASING API
+        // ОСНОВНОЙ КЛАСС ДЛЯ ДАННЫХ
         // ====================
-        class ResoLeasingAPI {
+        class VehicleData {
             constructor() {
-                this.apiUrl = 'https://api.resoleasing.com/graphql';
                 this.itemsPerPage = 12;
                 this.currentCategory = 'all';
                 this.currentPage = 1;
             }
             
-            // Основной метод получения данных
-            async fetchData(query, variables = {}) {
-                try {
-                    console.log('Отправляем запрос к API:', { query, variables });
-                    
-                    const response = await fetch(this.apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
+            // Получение тестовых данных
+            getMockVehicles(category = 'all', page = 1, limit = 12) {
+                const mockVehicles = [
+                    {
+                        id: '1',
+                        name: 'Kia Rio X-Line',
+                        price: 1850000,
+                        oldPrice: 1950000,
+                        description: 'Отличное состояние, один владелец, полная сервисная история. Автомобиль прошел полную диагностику, готов к эксплуатации.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } },
+                            { file: { path: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } },
+                            { file: { path: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Kia',
+                            model: 'Rio X-Line',
+                            year: 2023,
+                            enginePower: 123,
+                            engineVolume: 1.6,
+                            mileage: 15000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Седан',
+                            driveType: 'Передний',
+                            color: 'Белый',
+                            vin: 'KNAJC123456789012'
                         },
-                        body: JSON.stringify({
-                            operationName: 'FrontendOffersQuery',
-                            query: query,
-                            variables: variables
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        location: { name: 'Москва' },
+                        company: { name: 'Автосалон' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '2',
+                        name: 'Hyundai Solaris',
+                        price: 1650000,
+                        oldPrice: 1750000,
+                        description: 'Комплектация Comfort, экономичный расход, все ТО у дилера. Идеально подходит для города.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } },
+                            { file: { path: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Hyundai',
+                            model: 'Solaris',
+                            year: 2022,
+                            enginePower: 123,
+                            engineVolume: 1.6,
+                            mileage: 25000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Седан',
+                            driveType: 'Передний',
+                            color: 'Серый',
+                            vin: 'Z94CB41BBMR322222'
+                        },
+                        location: { name: 'Санкт-Петербург' },
+                        company: { name: 'Автоцентр' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '3',
+                        name: 'Volkswagen Polo',
+                        price: 1750000,
+                        description: 'Немецкое качество, минимальный пробег, идеальное состояние. Полный пакет документов.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } },
+                            { file: { path: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Volkswagen',
+                            model: 'Polo',
+                            year: 2023,
+                            enginePower: 110,
+                            engineVolume: 1.4,
+                            mileage: 12000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Хэтчбек',
+                            driveType: 'Передний',
+                            color: 'Синий',
+                            vin: 'WVWZZZAUZJW123456'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Немецкий автосалон' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '4',
+                        name: 'Toyota Camry',
+                        price: 2850000,
+                        oldPrice: 3100000,
+                        description: 'Премиум комплектация, кожаный салон, панорамная крыша, все опции. Автомобиль для бизнес-класса.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } },
+                            { file: { path: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Toyota',
+                            model: 'Camry',
+                            year: 2022,
+                            enginePower: 249,
+                            engineVolume: 3.5,
+                            mileage: 18000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Седан',
+                            driveType: 'Передний',
+                            color: 'Черный',
+                            vin: 'JTNK4JF4A00234567'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Премиум авто' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '5',
+                        name: 'Lada Vesta',
+                        price: 1250000,
+                        oldPrice: 1350000,
+                        description: 'Новый автомобиль, заводская гарантия, полный пакет документов. Отличный вариант для первого автомобиля.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1563720223488-8f2f62a6e71a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Lada',
+                            model: 'Vesta',
+                            year: 2023,
+                            enginePower: 106,
+                            engineVolume: 1.6,
+                            mileage: 5000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Седан',
+                            driveType: 'Передний',
+                            color: 'Красный',
+                            vin: 'XTA210990Y1234567'
+                        },
+                        location: { name: 'Нижний Новгород' },
+                        company: { name: 'Официальный дилер' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '6',
+                        name: 'Skoda Octavia',
+                        price: 1950000,
+                        description: 'Практичный автомобиль, большой багажник, экономный расход. Идеален для семьи и путешествий.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1549925862-990b5b7a97bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Skoda',
+                            model: 'Octavia',
+                            year: 2022,
+                            enginePower: 150,
+                            engineVolume: 1.8,
+                            mileage: 22000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Лифтбек',
+                            driveType: 'Передний',
+                            color: 'Серебристый',
+                            vin: 'TMBJG9NE5J0123456'
+                        },
+                        location: { name: 'Екатеринбург' },
+                        company: { name: 'Европейский автосалон' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '7',
+                        name: 'Ford Transit',
+                        price: 2850000,
+                        oldPrice: 3050000,
+                        description: 'Коммерческий автомобиль, идеален для бизнеса, просторный салон, отличная грузоподъемность.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Ford',
+                            model: 'Transit',
+                            year: 2021,
+                            enginePower: 170,
+                            engineVolume: 2.0,
+                            mileage: 45000,
+                            transmissionType: 'manual',
+                            bodyType: 'Микроавтобус',
+                            driveType: 'Задний',
+                            color: 'Белый',
+                            vin: 'WF0WXXGCDW4A12345'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Коммерческий транспорт' },
+                        type: 'commercial'
+                    },
+                    {
+                        id: '8',
+                        name: 'Renault Duster',
+                        price: 1650000,
+                        description: 'Надежный внедорожник, полный привод, отличная проходимость. Идеален для загородных поездок.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Renault',
+                            model: 'Duster',
+                            year: 2022,
+                            enginePower: 143,
+                            engineVolume: 1.3,
+                            mileage: 18000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Внедорожник',
+                            driveType: 'Полный',
+                            color: 'Оранжевый',
+                            vin: 'VF1JZ0A0523456789'
+                        },
+                        location: { name: 'Казань' },
+                        company: { name: 'Автосалон внедорожников' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '9',
+                        name: 'BMW X5',
+                        price: 4850000,
+                        oldPrice: 5200000,
+                        description: 'Премиум внедорожник, полный привод, все опции, идеальное состояние. Автомобиль мечты.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'BMW',
+                            model: 'X5',
+                            year: 2021,
+                            enginePower: 340,
+                            engineVolume: 3.0,
+                            mileage: 25000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Внедорожник',
+                            driveType: 'Полный',
+                            color: 'Черный',
+                            vin: 'WBAJF9C57BE123456'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Премиум авто' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '10',
+                        name: 'Mercedes-Benz Sprinter',
+                        price: 3850000,
+                        description: 'Коммерческий микроавтобус, отличное состояние, идеален для перевозки пассажиров или грузов.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Mercedes-Benz',
+                            model: 'Sprinter',
+                            year: 2020,
+                            enginePower: 190,
+                            engineVolume: 2.2,
+                            mileage: 55000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Микроавтобус',
+                            driveType: 'Задний',
+                            color: 'Серый',
+                            vin: 'WDB9066331S123456'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Коммерческий транспорт' },
+                        type: 'commercial'
+                    },
+                    {
+                        id: '11',
+                        name: 'Audi A4',
+                        price: 2450000,
+                        oldPrice: 2650000,
+                        description: 'Немецкий седан бизнес-класса, отличная динамика, премиальная отделка салона.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Audi',
+                            model: 'A4',
+                            year: 2021,
+                            enginePower: 190,
+                            engineVolume: 2.0,
+                            mileage: 20000,
+                            transmissionType: 'automatic',
+                            bodyType: 'Седан',
+                            driveType: 'Полный',
+                            color: 'Серый',
+                            vin: 'WAUZZZ8K2EA123456'
+                        },
+                        location: { name: 'Москва' },
+                        company: { name: 'Премиум авто' },
+                        type: 'passenger'
+                    },
+                    {
+                        id: '12',
+                        name: 'Chevrolet Niva',
+                        price: 950000,
+                        description: 'Надежный внедорожник по доступной цене, полный привод, отличная проходимость.',
+                        images: [
+                            { file: { path: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' } }
+                        ],
+                        vehicle: {
+                            brand: 'Chevrolet',
+                            model: 'Niva',
+                            year: 2020,
+                            enginePower: 80,
+                            engineVolume: 1.7,
+                            mileage: 35000,
+                            transmissionType: 'manual',
+                            bodyType: 'Внедорожник',
+                            driveType: 'Полный',
+                            color: 'Зеленый',
+                            vin: 'X9L384120N1234567'
+                        },
+                        location: { name: 'Краснодар' },
+                        company: { name: 'Автосалон' },
+                        type: 'passenger'
                     }
-                    
-                    const data = await response.json();
-                    console.log('Ответ от API:', data);
-                    
-                    if (data.errors) {
-                        console.error('GraphQL errors:', data.errors);
-                        throw new Error(data.errors[0].message);
-                    }
-                    
-                    return data;
-                } catch (error) {
-                    console.error('Ошибка при запросе к API:', error);
-                    this.showNotification('Ошибка подключения к базе данных. Пожалуйста, обновите страницу или свяжитесь с нами.', 'error');
-                    return null;
+                ];
+                
+                // Фильтрация по категории
+                let filteredVehicles = mockVehicles;
+                if (category !== 'all') {
+                    filteredVehicles = mockVehicles.filter(vehicle => vehicle.type === category);
                 }
+                
+                // Пагинация
+                const startIndex = (page - 1) * limit;
+                const endIndex = startIndex + limit;
+                const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex);
+                
+                // Имитация задержки сети
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            data: {
+                                offers: {
+                                    items: paginatedVehicles,
+                                    total: filteredVehicles.length
+                                }
+                            }
+                        });
+                    }, 300);
+                });
             }
             
-            // Получение списка предложений по категории
-            async getOffersByCategory(category, page = 1, limit = 12) {
-                const query = `
-                    query FrontendOffersQuery($input: OffersInput!) {
-                        offers(input: $input) {
-                            items {
-                                id
-                                name
-                                price
-                                oldPrice
-                                description
-                                images {
-                                    file {
-                                        path
-                                    }
-                                }
-                                vehicle {
-                                    brand
-                                    model
-                                    year
-                                    enginePower
-                                    mileage
-                                    transmissionType
-                                    bodyType
-                                    driveType
-                                    color
-                                    vin
-                                }
-                                location {
-                                    name
-                                }
-                                company {
-                                    name
-                                }
-                                status
-                                type
-                            }
-                            total
-                        }
-                    }
-                `;
+            // Получение тестового автомобиля по ID
+            async getMockVehicleById(id) {
+                const allVehicles = await this.getMockVehicles('all', 1, 100);
+                const vehicle = allVehicles.data.offers.items.find(v => v.id === id);
                 
-                const variables = {
-                    input: {
-                        page: page,
-                        limit: limit,
-                        type: category !== 'all' ? category.toUpperCase() : null,
-                        status: 'SALE',
-                        sort: 'created_at:desc'
-                    }
-                };
+                if (!vehicle) {
+                    throw new Error('Vehicle not found');
+                }
                 
-                return await this.fetchData(query, variables);
-            }
-            
-            // Получение детальной информации по ID
-            async getOfferById(id) {
-                const query = `
-                    query OfferQuery($id: ID!) {
-                        offer(id: $id) {
-                            id
-                            name
-                            description
-                            price
-                            oldPrice
-                            images {
-                                file {
-                                    path
-                                }
+                // Имитация задержки сети
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            data: {
+                                offer: vehicle
                             }
-                            vehicle {
-                                brand
-                                model
-                                year
-                                enginePower
-                                engineVolume
-                                mileage
-                                transmissionType
-                                bodyType
-                                driveType
-                                color
-                                vin
-                            }
-                            location {
-                                name
-                            }
-                            company {
-                                name
-                            }
-                        }
-                    }
-                `;
-                
-                const variables = { id: id };
-                return await this.fetchData(query, variables);
+                        });
+                    }, 200);
+                });
             }
             
             // Форматирование цены
@@ -1382,32 +1608,6 @@
                 };
                 return types[type] || type;
             }
-            
-            // Показать уведомление
-            showNotification(message, type = 'info') {
-                // Удаляем старые уведомления
-                document.querySelectorAll('.notification').forEach(n => n.remove());
-                
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i>
-                        <div>${message}</div>
-                    </div>
-                `;
-                
-                document.body.appendChild(notification);
-                
-                // Автоматическое скрытие через 5 секунд
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.style.opacity = '0';
-                        notification.style.transform = 'translateX(100%)';
-                        setTimeout(() => notification.remove(), 300);
-                    }
-                }, 5000);
-            }
         }
         
         // ====================
@@ -1415,7 +1615,7 @@
         // ====================
         class VehicleCatalogUI {
             constructor() {
-                this.api = new ResoLeasingAPI();
+                this.api = new VehicleData();
                 this.currentCategory = 'all';
                 this.currentPage = 1;
                 this.totalPages = 1;
@@ -1441,6 +1641,10 @@
                             this.showHomePage();
                         } else if (category) {
                             this.showCategoryPage(category);
+                        } else if (page === 'about') {
+                            document.getElementById('conditions-section').scrollIntoView({ 
+                                behavior: 'smooth' 
+                            });
                         }
                     });
                 });
@@ -1473,7 +1677,6 @@
                         if (category) {
                             this.showCategoryPage(category);
                         } else if (page) {
-                            // Прокрутка к условиям
                             document.getElementById('conditions-section').scrollIntoView({ 
                                 behavior: 'smooth' 
                             });
@@ -1504,6 +1707,12 @@
                 // Обновить активную ссылку
                 document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
                 document.querySelector('.nav-link[data-page="home"]').classList.add('active');
+                
+                // Обновить активные фильтры
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
                 
                 // Прокрутка вверх
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1550,7 +1759,7 @@
                 `;
                 
                 try {
-                    const response = await this.api.getOffersByCategory(category, page, this.api.itemsPerPage);
+                    const response = await this.api.getMockVehicles(category, page, this.api.itemsPerPage);
                     
                     if (response && response.data && response.data.offers) {
                         this.displayVehicles(response.data.offers.items);
@@ -1560,7 +1769,7 @@
                     }
                 } catch (error) {
                     console.error('Ошибка при загрузке автомобилей:', error);
-                    this.showError('Ошибка подключения к серверу. Пожалуйста, обновите страницу.');
+                    this.showError('Ошибка загрузки данных. Пожалуйста, обновите страницу.');
                 } finally {
                     this.isLoading = false;
                 }
@@ -1599,11 +1808,10 @@
                 const transmission = this.api.translateTransmission(vehicle.vehicle?.transmissionType);
                 const driveType = this.api.translateDriveType(vehicle.vehicle?.driveType);
                 
-                // Генерируем URL изображения
+                // URL изображения
                 let imageUrl = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 if (vehicle.images && vehicle.images.length > 0 && vehicle.images[0].file && vehicle.images[0].file.path) {
-                    const imagePath = vehicle.images[0].file.path;
-                    imageUrl = imagePath.startsWith('http') ? imagePath : `https://api.resoleasing.com${imagePath}`;
+                    imageUrl = vehicle.images[0].file.path;
                 }
                 
                 const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString('ru-RU')} км` : 'Новый';
@@ -1678,7 +1886,7 @@
                 document.getElementById('detail-subtitle').textContent = 'Полная информация об автомобиле';
                 
                 try {
-                    const response = await this.api.getOfferById(vehicleId);
+                    const response = await this.api.getMockVehicleById(vehicleId);
                     
                     if (response && response.data && response.data.offer) {
                         this.displayVehicleDetail(response.data.offer);
@@ -1744,11 +1952,7 @@
                 
                 if (images && images.length > 0) {
                     // Главное изображение
-                    const mainImagePath = images[0].file?.path;
-                    const mainImageUrl = mainImagePath 
-                        ? (mainImagePath.startsWith('http') ? mainImagePath : `https://api.resoleasing.com${mainImagePath}`)
-                        : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-                    
+                    const mainImageUrl = images[0].file?.path || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
                     mainImage.style.backgroundImage = `url('${mainImageUrl}')`;
                     
                     // Миниатюры
@@ -1758,11 +1962,7 @@
                         const thumb = document.createElement('div');
                         thumb.className = 'gallery-thumb';
                         
-                        const thumbPath = image.file?.path;
-                        const thumbUrl = thumbPath 
-                            ? (thumbPath.startsWith('http') ? thumbPath : `https://api.resoleasing.com${thumbPath}`)
-                            : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                        
+                        const thumbUrl = image.file?.path || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                         thumb.style.backgroundImage = `url('${thumbUrl}')`;
                         
                         thumb.addEventListener('click', () => {
@@ -1918,7 +2118,7 @@
                 container.innerHTML = `
                     <div style="text-align: center; grid-column: 1/-1; padding: 60px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: var(--silver); margin-bottom: 20px;"></i>
-                        <h3 style="color: var(--silver-light); margin-bottom: 15px;">Ошибка загрузки данных</h3>
+                        <h3 style="color: var(--silver-light); margin-bottom: 15px;">Временные неполадки</h3>
                         <p style="color: var(--silver); margin-bottom: 25px;">${message}</p>
                         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                             <button class="btn btn-primary" id="retry-load">
@@ -1962,7 +2162,33 @@
             
             // Показать уведомление
             showNotification(message, type = 'info') {
-                this.api.showNotification(message, type);
+                // Удаляем старые уведомления
+                document.querySelectorAll('.notification').forEach(n => n.remove());
+                
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px; flex-grow: 1;">
+                        <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 
+                                        type === 'success' ? 'fa-check-circle' : 
+                                        'fa-info-circle'}"></i>
+                        <div>${message}</div>
+                    </div>
+                    <button class="btn" style="padding: 5px 10px; font-size: 12px; background: transparent; border: none; color: var(--silver);" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Автоматическое скрытие через 10 секунд
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.style.opacity = '0';
+                        notification.style.transform = 'translateX(100%)';
+                        setTimeout(() => notification.remove(), 300);
+                    }
+                }, 10000);
             }
             
             // Обновление года в футере
