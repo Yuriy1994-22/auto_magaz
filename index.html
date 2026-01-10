@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AUTOSTEEL | Продажа авто с пробегом из лизинга</title>
+    <title>AUTOSTEEL | Автомобили с пробегом</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 🖤 СТАЛЬНАЯ ЦВЕТОВАЯ ПАЛИТРА */
@@ -700,6 +700,43 @@
             color: var(--silver-light);
         }
         
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 20px;
+            background: var(--steel-medium);
+            color: var(--silver-light);
+            border-radius: 8px;
+            border: 1px solid rgba(61, 68, 77, 0.5);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .notification.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
         /* 📱 АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНА */
         @media (max-width: 768px) {
             body {
@@ -863,6 +900,13 @@
             .section-divider {
                 margin: 40px 0;
             }
+            
+            .notification {
+                top: 80px;
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
         }
         
         /* 🖥️ ДЛЯ ПЛАНШЕТОВ */
@@ -910,7 +954,7 @@
                 </div>
                 <div class="logo-text">
                     <h1>AUTOSTEEL</h1>
-                    <p>Авто с пробегом из лизинга</p>
+                    <p>Авто с пробегом</p>
                 </div>
             </div>
             
@@ -938,8 +982,8 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="fade-in">АВТОМОБИЛИ С ПРОБЕГОМ<br>ИЗ ЛИЗИНГА</h1>
-                    <p class="fade-in">Более 500 проверенных автомобилей с полной историей обслуживания. Прямые поставки от лизинговых компаний.</p>
+                    <h1 class="fade-in">АВТОМОБИЛИ С ПРОБЕГОМ</h1>
+                    <p class="fade-in">Более 500 проверенных автомобилей с полной историей обслуживания. Все автомобили прошли полную диагностику.</p>
                     <div class="hero-buttons fade-in">
                         <a href="https://t.me/yatoms" target="_blank" class="btn btn-telegram">
                             <i class="fab fa-telegram"></i> Написать менеджеру
@@ -991,8 +1035,8 @@
         <section class="section" id="conditions-section">
             <div class="container">
                 <div class="section-header">
-                    <h2>ПОЧЕМУ МЫ</h2>
-                    <p>Работаем напрямую с лизинговыми компаниями</p>
+                    <h2>ПОЧЕМУ ВЫБИРАЮТ НАС</h2>
+                    <p>Прямые поставки от официальных источников</p>
                 </div>
                 
                 <div class="vehicles-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -1017,7 +1061,7 @@
                             <i class="fas fa-percentage"></i>
                         </div>
                         <h3 style="font-size: 22px; margin-bottom: 20px; color: var(--silver-light);">Выгодные цены</h3>
-                        <p style="color: var(--silver); line-height: 1.8;">Прямые поставки от лизинговых компаний позволяют предлагать цены ниже рыночных на 15-20%.</p>
+                        <p style="color: var(--silver); line-height: 1.8;">Прямые поставки позволяют предлагать цены ниже рыночных на 15-20%.</p>
                     </div>
                 </div>
             </div>
@@ -1086,7 +1130,7 @@
                         <a href="https://t.me/yatoms" target="_blank" class="btn btn-telegram" style="width: 100%; padding: 20px; font-size: 18px; margin-bottom: 20px;">
                             <i class="fab fa-telegram"></i> Обсудить покупку в Telegram
                         </a>
-                        <button class="btn btn-primary" style="width: 100%; padding: 20px; font-size: 18px;">
+                        <button class="btn btn-primary" id="callback-btn" style="width: 100%; padding: 20px; font-size: 18px;">
                             <i class="fas fa-phone-alt"></i> Заказать звонок
                         </button>
                     </div>
@@ -1101,7 +1145,7 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <h2>AUTOSTEEL</h2>
-                    <p style="color: var(--silver); margin-top: 20px;">Продажа автомобилей с пробегом из лизинга. Прямые поставки от лизинговых компаний.</p>
+                    <p style="color: var(--silver); margin-top: 20px;">Продажа автомобилей с пробегом. Прямые поставки от официальных источников.</p>
                     <div style="margin-top: 30px;">
                         <a href="https://t.me/yatoms" target="_blank" style="color: var(--silver-light); text-decoration: none; font-weight: 500;">
                             <i class="fab fa-telegram"></i> @yatoms
@@ -1134,8 +1178,8 @@
                         <h3>Контакты</h3>
                         <ul>
                             <li><a href="https://t.me/yatoms" target="_blank">Telegram: @yatoms</a></li>
-                            <li><a href="#">Работаем 24/7</a></li>
-                            <li><a href="#">По всей России</a></li>
+                            <li><a href="#" data-page="about">Работаем 24/7</a></li>
+                            <li><a href="#" data-page="about">По всей России</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1154,16 +1198,16 @@
         class ResoLeasingAPI {
             constructor() {
                 this.apiUrl = 'https://api.resoleasing.com/graphql';
-                this.cacheKey = 'resoleasing_cache';
-                this.cacheTime = 30 * 60 * 1000; // 30 минут
+                this.itemsPerPage = 12;
                 this.currentCategory = 'all';
                 this.currentPage = 1;
-                this.itemsPerPage = 12;
             }
             
             // Основной метод получения данных
-            async fetchData(query, variables) {
+            async fetchData(query, variables = {}) {
                 try {
+                    console.log('Отправляем запрос к API:', { query, variables });
+                    
                     const response = await fetch(this.apiUrl, {
                         method: 'POST',
                         headers: {
@@ -1177,9 +1221,22 @@
                         })
                     });
                     
-                    return await response.json();
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('Ответ от API:', data);
+                    
+                    if (data.errors) {
+                        console.error('GraphQL errors:', data.errors);
+                        throw new Error(data.errors[0].message);
+                    }
+                    
+                    return data;
                 } catch (error) {
                     console.error('Ошибка при запросе к API:', error);
+                    this.showNotification('Ошибка подключения к базе данных. Пожалуйста, обновите страницу или свяжитесь с нами.', 'error');
                     return null;
                 }
             }
@@ -1230,8 +1287,8 @@
                     input: {
                         page: page,
                         limit: limit,
-                        type: category !== 'all' ? category : null,
-                        status: 'sale',
+                        type: category !== 'all' ? category.toUpperCase() : null,
+                        status: 'SALE',
                         sort: 'created_at:desc'
                     }
                 };
@@ -1283,34 +1340,73 @@
             
             // Форматирование цены
             formatPrice(price) {
+                if (!price) return 'Цена по запросу';
                 return new Intl.NumberFormat('ru-RU', {
                     style: 'currency',
                     currency: 'RUB',
-                    minimumFractionDigits: 0
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
                 }).format(price);
             }
             
             // Перевод типа трансмиссии
             translateTransmission(type) {
+                if (!type) return 'Не указано';
+                
                 const types = {
+                    'AUTOMATIC': 'Автомат',
+                    'MANUAL': 'Механика',
+                    'ROBOT': 'Робот',
+                    'VARIATOR': 'Вариатор',
                     'automatic': 'Автомат',
                     'manual': 'Механика',
                     'robot': 'Робот',
                     'variator': 'Вариатор'
                 };
-                return types[type] || type || 'Не указано';
+                return types[type] || type;
             }
             
-            // Получение типа техники по категории
-            getCategoryName(category) {
-                const categories = {
-                    'passenger': 'Легковые автомобили',
-                    'commercial': 'Коммерческий транспорт',
-                    'truck': 'Грузовики',
-                    'special': 'Спецтехника',
-                    'all': 'Все предложения'
+            // Перевод типа привода
+            translateDriveType(type) {
+                if (!type) return 'Не указано';
+                
+                const types = {
+                    'FRONT': 'Передний',
+                    'REAR': 'Задний',
+                    'FULL': 'Полный',
+                    'ALL_WHEEL_DRIVE': 'Полный',
+                    'front': 'Передний',
+                    'rear': 'Задний',
+                    'full': 'Полный',
+                    'all_wheel_drive': 'Полный'
                 };
-                return categories[category] || category;
+                return types[type] || type;
+            }
+            
+            // Показать уведомление
+            showNotification(message, type = 'info') {
+                // Удаляем старые уведомления
+                document.querySelectorAll('.notification').forEach(n => n.remove());
+                
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i>
+                        <div>${message}</div>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Автоматическое скрытие через 5 секунд
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.style.opacity = '0';
+                        notification.style.transform = 'translateX(100%)';
+                        setTimeout(() => notification.remove(), 300);
+                    }
+                }, 5000);
             }
         }
         
@@ -1362,6 +1458,11 @@
                     this.showHomePage();
                 });
                 
+                // Кнопка "Заказать звонок"
+                document.getElementById('callback-btn').addEventListener('click', () => {
+                    this.showNotification('Менеджер свяжется с вами в ближайшее время. Также вы можете написать нам в Telegram.', 'success');
+                });
+                
                 // Кнопки в футере
                 document.querySelectorAll('.footer-column a').forEach(link => {
                     link.addEventListener('click', (e) => {
@@ -1378,6 +1479,15 @@
                             });
                         }
                     });
+                });
+                
+                // Кнопки на главной
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.btn-primary') && e.target.closest('.btn-primary').hasAttribute('data-category')) {
+                        e.preventDefault();
+                        const category = e.target.closest('.btn-primary').getAttribute('data-category');
+                        this.showCategoryPage(category);
+                    }
                 });
             }
             
@@ -1446,11 +1556,11 @@
                         this.displayVehicles(response.data.offers.items);
                         this.updatePagination(response.data.offers.total, page);
                     } else {
-                        this.showError();
+                        this.showError('Не удалось загрузить данные. Пожалуйста, попробуйте позже.');
                     }
                 } catch (error) {
                     console.error('Ошибка при загрузке автомобилей:', error);
-                    this.showMockData();
+                    this.showError('Ошибка подключения к серверу. Пожалуйста, обновите страницу.');
                 } finally {
                     this.isLoading = false;
                 }
@@ -1465,7 +1575,10 @@
                         <div style="text-align: center; grid-column: 1/-1; padding: 60px;">
                             <i class="fas fa-car" style="font-size: 48px; color: var(--silver); margin-bottom: 20px;"></i>
                             <h3 style="color: var(--silver-light); margin-bottom: 15px;">Нет доступных предложений</h3>
-                            <p style="color: var(--silver);">В этой категории пока нет автомобилей. Попробуйте выбрать другую категорию.</p>
+                            <p style="color: var(--silver);">В этой категории пока нет автомобилей. Попробуйте выбрать другую категорию или свяжитесь с нами для подбора.</p>
+                            <a href="https://t.me/yatoms" target="_blank" class="btn btn-telegram" style="margin-top: 20px;">
+                                <i class="fab fa-telegram"></i> Подобрать автомобиль
+                            </a>
                         </div>
                     `;
                     return;
@@ -1484,16 +1597,21 @@
                 const formattedPrice = this.api.formatPrice(vehicle.price);
                 const formattedOldPrice = vehicle.oldPrice ? this.api.formatPrice(vehicle.oldPrice) : null;
                 const transmission = this.api.translateTransmission(vehicle.vehicle?.transmissionType);
-                const imageUrl = vehicle.images && vehicle.images.length > 0 
-                    ? `https://api.resoleasing.com${vehicle.images[0].file.path}` 
-                    : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                const driveType = this.api.translateDriveType(vehicle.vehicle?.driveType);
                 
-                const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString()} км` : 'Новый';
+                // Генерируем URL изображения
+                let imageUrl = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                if (vehicle.images && vehicle.images.length > 0 && vehicle.images[0].file && vehicle.images[0].file.path) {
+                    const imagePath = vehicle.images[0].file.path;
+                    imageUrl = imagePath.startsWith('http') ? imagePath : `https://api.resoleasing.com${imagePath}`;
+                }
+                
+                const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString('ru-RU')} км` : 'Новый';
                 const year = vehicle.vehicle?.year || '2023';
                 const engine = vehicle.vehicle?.enginePower ? `${vehicle.vehicle.enginePower} л.с.` : '';
-                const title = vehicle.vehicle?.brand && vehicle.vehicle?.model 
-                    ? `${vehicle.vehicle.brand} ${vehicle.vehicle.model}`
-                    : vehicle.name;
+                const brand = vehicle.vehicle?.brand || '';
+                const model = vehicle.vehicle?.model || '';
+                const title = brand && model ? `${brand} ${model}` : vehicle.name;
                 
                 const card = document.createElement('div');
                 card.className = `vehicle-card fade-in`;
@@ -1501,11 +1619,12 @@
                 
                 // Определяем бейдж
                 let badge = '';
-                if (vehicle.oldPrice) {
-                    badge = '<div class="vehicle-badge sale">СКИДКА</div>';
-                } else if (parseInt(mileage) < 10000) {
+                if (vehicle.oldPrice && vehicle.oldPrice > vehicle.price) {
+                    const discount = Math.round((1 - vehicle.price / vehicle.oldPrice) * 100);
+                    badge = `<div class="vehicle-badge sale">-${discount}%</div>`;
+                } else if (vehicle.vehicle?.mileage && vehicle.vehicle.mileage < 10000) {
                     badge = '<div class="vehicle-badge new">МАЛЫЙ ПРОБЕГ</div>';
-                } else if (index % 7 === 0) {
+                } else if (index % 5 === 0) {
                     badge = '<div class="vehicle-badge featured">ВЫГОДНО</div>';
                     card.classList.add('featured');
                 }
@@ -1517,7 +1636,7 @@
                         <div class="vehicle-title">${title}</div>
                         <div class="vehicle-specs">
                             ${year} • ${mileage}<br>
-                            ${engine} • ${transmission}
+                            ${engine} • ${transmission} • ${driveType}
                         </div>
                         <div class="vehicle-price">${formattedPrice}</div>
                         ${formattedOldPrice ? `<div class="vehicle-old-price">${formattedOldPrice}</div>` : ''}
@@ -1580,12 +1699,14 @@
                 const formattedPrice = this.api.formatPrice(vehicle.price);
                 const formattedOldPrice = vehicle.oldPrice ? this.api.formatPrice(vehicle.oldPrice) : null;
                 const transmission = this.api.translateTransmission(vehicle.vehicle?.transmissionType);
-                const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString()} км` : 'Новый';
+                const driveType = this.api.translateDriveType(vehicle.vehicle?.driveType);
+                const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString('ru-RU')} км` : 'Новый';
                 const year = vehicle.vehicle?.year || '2023';
                 const engine = vehicle.vehicle?.enginePower ? `${vehicle.vehicle.enginePower} л.с.` : '';
-                const title = vehicle.vehicle?.brand && vehicle.vehicle?.model 
-                    ? `${vehicle.vehicle.brand} ${vehicle.vehicle.model}`
-                    : vehicle.name;
+                const engineVolume = vehicle.vehicle?.engineVolume ? `${vehicle.vehicle.engineVolume} л` : '';
+                const brand = vehicle.vehicle?.brand || '';
+                const model = vehicle.vehicle?.model || '';
+                const title = brand && model ? `${brand} ${model}` : vehicle.name;
                 
                 // Обновляем заголовок
                 document.getElementById('detail-title').textContent = title;
@@ -1623,7 +1744,11 @@
                 
                 if (images && images.length > 0) {
                     // Главное изображение
-                    const mainImageUrl = `https://api.resoleasing.com${images[0].file.path}`;
+                    const mainImagePath = images[0].file?.path;
+                    const mainImageUrl = mainImagePath 
+                        ? (mainImagePath.startsWith('http') ? mainImagePath : `https://api.resoleasing.com${mainImagePath}`)
+                        : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+                    
                     mainImage.style.backgroundImage = `url('${mainImageUrl}')`;
                     
                     // Миниатюры
@@ -1632,10 +1757,16 @@
                         
                         const thumb = document.createElement('div');
                         thumb.className = 'gallery-thumb';
-                        thumb.style.backgroundImage = `url('https://api.resoleasing.com${image.file.path}')`;
+                        
+                        const thumbPath = image.file?.path;
+                        const thumbUrl = thumbPath 
+                            ? (thumbPath.startsWith('http') ? thumbPath : `https://api.resoleasing.com${thumbPath}`)
+                            : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                        
+                        thumb.style.backgroundImage = `url('${thumbUrl}')`;
                         
                         thumb.addEventListener('click', () => {
-                            mainImage.style.backgroundImage = `url('https://api.resoleasing.com${image.file.path}')`;
+                            mainImage.style.backgroundImage = `url('${thumbUrl}')`;
                             // Убираем активность у всех миниатюр и добавляем кликнутой
                             gallery.querySelectorAll('.gallery-thumb').forEach(t => t.style.opacity = '0.7');
                             thumb.style.opacity = '1';
@@ -1643,8 +1774,26 @@
                         
                         gallery.appendChild(thumb);
                     });
+                    
+                    // Если изображений меньше 3, добавляем заглушки
+                    for (let i = images.length; i < 3; i++) {
+                        const thumb = document.createElement('div');
+                        thumb.className = 'gallery-thumb';
+                        thumb.style.backgroundImage = `url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`;
+                        thumb.style.opacity = '0.5';
+                        gallery.appendChild(thumb);
+                    }
                 } else {
                     mainImage.style.backgroundImage = `url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')`;
+                    
+                    // Добавляем 3 заглушки
+                    for (let i = 0; i < 3; i++) {
+                        const thumb = document.createElement('div');
+                        thumb.className = 'gallery-thumb';
+                        thumb.style.backgroundImage = `url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`;
+                        thumb.style.opacity = '0.5';
+                        gallery.appendChild(thumb);
+                    }
                 }
             }
             
@@ -1653,17 +1802,23 @@
                 const specsContainer = document.getElementById('vehicle-specs');
                 specsContainer.innerHTML = '';
                 
+                const transmission = this.api.translateTransmission(vehicle.vehicle?.transmissionType);
+                const driveType = this.api.translateDriveType(vehicle.vehicle?.driveType);
+                const mileage = vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString('ru-RU')} км` : 'Новый';
+                const engineVolume = vehicle.vehicle?.engineVolume ? `${vehicle.vehicle.engineVolume} л` : 'Не указан';
+                const enginePower = vehicle.vehicle?.enginePower ? `${vehicle.vehicle.enginePower} л.с.` : 'Не указан';
+                
                 const specs = [
-                    { label: 'Год выпуска', value: vehicle.vehicle?.year || 'Не указан' },
-                    { label: 'Пробег', value: vehicle.vehicle?.mileage ? `${vehicle.vehicle.mileage.toLocaleString()} км` : 'Новый' },
-                    { label: 'Двигатель', value: vehicle.vehicle?.enginePower ? `${vehicle.vehicle.enginePower} л.с.` : 'Не указан' },
-                    { label: 'Объем двигателя', value: vehicle.vehicle?.engineVolume ? `${vehicle.vehicle.engineVolume} л` : 'Не указан' },
-                    { label: 'КПП', value: this.api.translateTransmission(vehicle.vehicle?.transmissionType) },
-                    { label: 'Привод', value: vehicle.vehicle?.driveType || 'Не указан' },
-                    { label: 'Кузов', value: vehicle.vehicle?.bodyType || 'Не указан' },
-                    { label: 'Цвет', value: vehicle.vehicle?.color || 'Не указан' },
-                    { label: 'VIN', value: vehicle.vehicle?.vin || 'Не указан' },
-                    { label: 'Город', value: vehicle.location?.name || 'Москва' }
+                    { label: 'Год выпуска', value: vehicle.vehicle?.year || 'Не указан', icon: 'fa-calendar' },
+                    { label: 'Пробег', value: mileage, icon: 'fa-tachometer-alt' },
+                    { label: 'Двигатель', value: enginePower, icon: 'fa-cog' },
+                    { label: 'Объем двигателя', value: engineVolume, icon: 'fa-gas-pump' },
+                    { label: 'КПП', value: transmission, icon: 'fa-cogs' },
+                    { label: 'Привод', value: driveType, icon: 'fa-car-side' },
+                    { label: 'Кузов', value: vehicle.vehicle?.bodyType || 'Не указан', icon: 'fa-car' },
+                    { label: 'Цвет', value: vehicle.vehicle?.color || 'Не указан', icon: 'fa-palette' },
+                    { label: 'VIN', value: vehicle.vehicle?.vin || 'Не указан', icon: 'fa-barcode' },
+                    { label: 'Город', value: vehicle.location?.name || 'Москва', icon: 'fa-map-marker-alt' }
                 ];
                 
                 specs.forEach(spec => {
@@ -1671,12 +1826,30 @@
                         const specElement = document.createElement('div');
                         specElement.className = 'spec-item';
                         specElement.innerHTML = `
-                            <div class="spec-label">${spec.label}</div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <i class="fas ${spec.icon}" style="color: var(--silver);"></i>
+                                <div class="spec-label">${spec.label}</div>
+                            </div>
                             <div class="spec-value">${spec.value}</div>
                         `;
                         specsContainer.appendChild(specElement);
                     }
                 });
+                
+                // Если мало спецификаций, добавляем описание
+                if (specs.filter(s => s.value !== 'Не указан').length < 5 && vehicle.description) {
+                    const descElement = document.createElement('div');
+                    descElement.className = 'spec-item';
+                    descElement.style.gridColumn = 'span 2';
+                    descElement.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-file-alt" style="color: var(--silver);"></i>
+                            <div class="spec-label">Описание</div>
+                        </div>
+                        <div style="color: var(--silver-light); line-height: 1.6;">${vehicle.description}</div>
+                    `;
+                    specsContainer.appendChild(descElement);
+                }
             }
             
             // Обновление пагинации
@@ -1739,113 +1912,31 @@
                 });
             }
             
-            // Показать мок-данные при ошибке
-            showMockData() {
-                const mockVehicles = [
-                    {
-                        id: '1',
-                        name: 'Kia Rio X-Line',
-                        price: 1850000,
-                        oldPrice: 1950000,
-                        vehicle: {
-                            brand: 'Kia',
-                            model: 'Rio X-Line',
-                            year: 2023,
-                            enginePower: 123,
-                            mileage: 15000,
-                            transmissionType: 'automatic'
-                        },
-                        images: [{
-                            file: {
-                                path: '/storage/vehicles/images/1719869482_662cfdbac8c41.jpg'
-                            }
-                        }],
-                        location: { name: 'Москва' }
-                    },
-                    {
-                        id: '2',
-                        name: 'Hyundai Solaris',
-                        price: 1650000,
-                        oldPrice: 1750000,
-                        vehicle: {
-                            brand: 'Hyundai',
-                            model: 'Solaris',
-                            year: 2022,
-                            enginePower: 123,
-                            mileage: 25000,
-                            transmissionType: 'automatic'
-                        },
-                        images: [{
-                            file: {
-                                path: '/storage/vehicles/images/1719869500_662cfdbac8c42.jpg'
-                            }
-                        }],
-                        location: { name: 'Санкт-Петербург' }
-                    },
-                    {
-                        id: '3',
-                        name: 'Volkswagen Polo',
-                        price: 1750000,
-                        vehicle: {
-                            brand: 'Volkswagen',
-                            model: 'Polo',
-                            year: 2023,
-                            enginePower: 110,
-                            mileage: 12000,
-                            transmissionType: 'automatic'
-                        },
-                        images: [{
-                            file: {
-                                path: '/storage/vehicles/images/1719869520_662cfdbac8c43.jpg'
-                            }
-                        }],
-                        location: { name: 'Москва' }
-                    },
-                    {
-                        id: '4',
-                        name: 'Toyota Camry',
-                        price: 2850000,
-                        oldPrice: 3100000,
-                        vehicle: {
-                            brand: 'Toyota',
-                            model: 'Camry',
-                            year: 2022,
-                            enginePower: 249,
-                            mileage: 18000,
-                            transmissionType: 'automatic'
-                        },
-                        images: [{
-                            file: {
-                                path: '/storage/vehicles/images/1719869540_662cfdbac8c44.jpg'
-                            }
-                        }],
-                        location: { name: 'Москва' }
-                    }
-                ];
-                
-                this.displayVehicles(mockVehicles);
-                
-                // Скрыть пагинацию
-                document.getElementById('pagination').style.display = 'none';
-            }
-            
             // Показать ошибку
-            showError() {
+            showError(message) {
                 const container = document.getElementById('vehicles-container');
                 container.innerHTML = `
                     <div style="text-align: center; grid-column: 1/-1; padding: 60px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: var(--silver); margin-bottom: 20px;"></i>
                         <h3 style="color: var(--silver-light); margin-bottom: 15px;">Ошибка загрузки данных</h3>
-                        <p style="color: var(--silver); margin-bottom: 25px;">Не удалось загрузить данные с сервера. Пожалуйста, попробуйте позже.</p>
-                        <button class="btn btn-primary" id="retry-load">
-                            <i class="fas fa-redo"></i> Попробовать снова
-                        </button>
+                        <p style="color: var(--silver); margin-bottom: 25px;">${message}</p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-primary" id="retry-load">
+                                <i class="fas fa-redo"></i> Попробовать снова
+                            </button>
+                            <a href="https://t.me/yatoms" target="_blank" class="btn btn-telegram">
+                                <i class="fab fa-telegram"></i> Связаться в Telegram
+                            </a>
+                        </div>
                     </div>
                 `;
                 
                 document.getElementById('retry-load').addEventListener('click', () => {
                     this.loadVehicles(this.currentCategory, this.currentPage);
                 });
+                
+                // Скрыть пагинацию
+                document.getElementById('pagination').style.display = 'none';
             }
             
             // Показать ошибку в детальной странице
@@ -1869,6 +1960,11 @@
                 `;
             }
             
+            // Показать уведомление
+            showNotification(message, type = 'info') {
+                this.api.showNotification(message, type);
+            }
+            
             // Обновление года в футере
             updateYear() {
                 document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -1881,15 +1977,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Инициализация UI
             const catalogUI = new VehicleCatalogUI();
-            
-            // Обработка кнопок "Подробнее" на главной
-            document.addEventListener('click', (e) => {
-                if (e.target.closest('.btn-primary') && e.target.closest('.btn-primary').hasAttribute('data-category')) {
-                    e.preventDefault();
-                    const category = e.target.closest('.btn-primary').getAttribute('data-category');
-                    catalogUI.showCategoryPage(category);
-                }
-            });
             
             // Анимации при скролле
             const observerOptions = {
